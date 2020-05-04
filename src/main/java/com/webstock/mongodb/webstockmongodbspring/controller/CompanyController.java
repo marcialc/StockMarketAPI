@@ -41,7 +41,7 @@ public class CompanyController {
     }
 
 
-    //@Scheduled(fixedRate = 5000)
+    @Scheduled(fixedRate = 5000)
     public void pickRandomCompany(){
 
         Random random = new Random();
@@ -89,8 +89,6 @@ public class CompanyController {
         for(int i=0; i<companyRepository.count(); i++){
             company = companyRepository.findAll().get(i);
             company.setTodayPrice(company.getPrice());
-//            company.setChange(0.0);
-//            company.setChg(0.0);
             companyRepository.save(company);
         }
     }
