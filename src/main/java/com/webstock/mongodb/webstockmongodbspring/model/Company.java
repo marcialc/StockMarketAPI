@@ -12,6 +12,8 @@ public class Company {
     private String name;
     private double price;
     private double todayPrice;
+    private double change;
+    private double chg;
     private String link;
 
     public String getId() {
@@ -52,6 +54,22 @@ public class Company {
 
     public void setTodayPrice(double todayPrice) {
         this.todayPrice = todayPrice;
+    }
+
+    public double getChange() {
+        return change;
+    }
+
+    public void setChange(double change) {
+        this.change = change;
+    }
+
+    public double getChg() {
+        return chg;
+    }
+
+    public void setChg(double chg) {
+        this.chg = chg;
     }
 
     public String getLink() {

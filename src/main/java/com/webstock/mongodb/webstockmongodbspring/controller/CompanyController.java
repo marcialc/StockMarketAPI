@@ -40,6 +40,12 @@ public class CompanyController {
         return companyRepository.findAll();
     }
 
+    @GetMapping(value = "/{id}")
+    public Company getOne(@PathVariable String id) {
+        return companyRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException());
+    }
+
 
     @Scheduled(fixedRate = 5000)
     public void pickRandomCompany(){
@@ -71,13 +77,19 @@ public class CompanyController {
 
         int postiveOrNegative = random.nextInt(2) == 1 ? -1 : 1;
 
-        double change = postiveOrNegative * Math.round((random.nextDouble()*10) * 100.0)/100.0;
-        change = company.getPrice() + change < 0 ? change*-1: change;
-
-        double price = company.getPrice() + change;
+        double priceFluctuation = postiveOrNegative * Math.round((random.nextDouble()*10) * 100.0)/100.0;
+        priceFluctuation = company.getPrice() + priceFluctuation < 0 ? priceFluctuation*-1: priceFluctuation;
+        double price = company.getPrice() + priceFluctuation;
         price = Math.round(price * 100.0)/100.0;
 
+        double change = Math.round((price - company.getTodayPrice()) * 100.0)/100.0;
+
+        double chg = Math.round((change/company.getTodayPrice()) * 100.0)/100.0;
+
         company.setPrice(price);
+        company.setChange(change);
+        company.setChg(chg);
+
 
         companyRepository.save(company);
     }
@@ -89,6 +101,8 @@ public class CompanyController {
         for(int i=0; i<companyRepository.count(); i++){
             company = companyRepository.findAll().get(i);
             company.setTodayPrice(company.getPrice());
+            company.setChange(0.0);
+            company.setChg(0.0);
             companyRepository.save(company);
         }
     }
